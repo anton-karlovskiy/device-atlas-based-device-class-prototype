@@ -24,27 +24,22 @@ const deviceApi = (function () {
   return devApi;
 })();
 
-// ray test touch <
-// TODO: hardcoded
-app.get('/api/device-properties', function (req, res) {
-  if (deviceApi.error) {
-    return res.status(500).json({
-      message: deviceApi.error
-    });
-  }
-  
-  const properties = deviceApi.getPropertiesFromRequest(req);
-  
-  const props = {};
-  for (const name in properties.getMap()) {
-      props[name] = {};
-      props[name]['value'] = properties.get(name).getValue();
-  }
-  return res.status(200).send(props);
-});
-// ray test touch >
+// TODO: device properties testing -> remove on release
+// app.get('/api/device-properties', function (req, res) {
+//   if (deviceApi.error) {
+//     return res.status(500).json({
+//       message: deviceApi.error
+//     });
+//   }
+//   const properties = deviceApi.getPropertiesFromRequest(req);
+//   const props = {};
+//   for (const name in properties.getMap()) {
+//       props[name] = {};
+//       props[name]['value'] = properties.get(name).getValue();
+//   }
+//   return res.status(200).send(props);
+// });
 
-// TODO: hardcoded
 app.get('/api/device', function (req, res) {
   console.log('[server] user-agent => ', req.headers['user-agent']);
 
@@ -66,12 +61,18 @@ app.get('/api/device', function (req, res) {
   const androidBenchmarks = require('./lib/geekbench/android-benchmarks.json').devices;
   const iosBenchmarks = require('./lib/geekbench/ios-benchmarks.json').devices;
   const allBenchmarks = [...androidBenchmarks, ...iosBenchmarks];
-  // ray test touch <
   const isiOS = properties.get('osiOs').getValue();
   const vendor = properties.get('vendor').getValue();
   const marketingName = properties.get('marketingName').getValue();
+
+  // TODO: if cookieSupport is not true, iOS device name is not valid.
+  // The client-side component uses a cookie to support the detection of granular models but the cookie is set after the first page load, therefore it is not recommended to rely on the client-side properties for the very first page load.
+  // Here is a reference to our documentation explaining that, section "Basic Server-side Usage".
+  // https://docs.deviceatlas.com/apis/clientside/1.5/README.ClientSide.html
+  // what we can suggest is to trigger a reload of the page, with Javascript, after the initial detection. I know it's not an elegant solution but that's how the library works at the moment.
+  // you could check if the cookie DAPROPS is set. Would something like this do?
+  // (function reloadPage(){-1!=document.cookie.indexOf("DAPROPS=")?location.reload():setTimeout(reloadPage,50)})();
   const deviceName = !isiOS ? `${vendor} ${marketingName}` : marketingName;
-  // ray test touch >
   const matchedBenchmark = allBenchmarks.find(benchmark => benchmark.name.toLowerCase() === deviceName.toLowerCase());
 
   if (!matchedBenchmark) {

@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-// TODO: hardcoded, not modular matched with server URL -> dotenv
-const DEVICE_API_URL = 'http://localhost:5000/api/device/';
-// ray test touch <
-const DEVICE_PROPERTIES_API_URL = 'http://localhost:5000/api/device-properties/';
-// ray test touch >
+// TODO: replace this with the domain when deploying the app
+const HOST_ADDR = 'http://localhost:5000/';
+
+const DEVICE_API_URL = `${HOST_ADDR}api/device/`;
+
+// TODO: device properties testing -> remove on release
+// const DEVICE_PROPERTIES_API_URL = `${HOST_ADDR}api/device-properties/`;
 
 const Multicore_Score_Threshold = 4000;
 
 export {
   DEVICE_API_URL,
-  // ray test touch <
-  DEVICE_PROPERTIES_API_URL,
-  // ray test touch >
+  // TODO: device properties testing -> remove on release
+  // DEVICE_PROPERTIES_API_URL,
   Multicore_Score_Threshold
 };

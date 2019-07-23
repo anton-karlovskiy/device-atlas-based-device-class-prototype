@@ -17,9 +17,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// ray test touch <
-import { DEVICE_API_URL, DEVICE_PROPERTIES_API_URL } from '../config';
-// ray test touch >
+// TODO: device properties testing -> remove on release
+import { DEVICE_API_URL/*, DEVICE_PROPERTIES_API_URL*/ } from '../config';
 
 const unsupportMessage = 'The device is not detected.';
 
@@ -31,10 +30,11 @@ const useDeviceParams = () => {
       let device;
       try {
         const response = await axios.get(`${DEVICE_API_URL}`);
-        // ray test touch <
-        const { data: deviceProperties } = await axios.get(`${DEVICE_PROPERTIES_API_URL}`);
-        console.log('[getDevice] deviceProperties => ', deviceProperties);
-        // ray test touch >
+
+        // TODO: device properties testing -> remove on release
+        // const { data: deviceProperties } = await axios.get(`${DEVICE_PROPERTIES_API_URL}`);
+        // console.log('[getDevice] deviceProperties => ', deviceProperties);
+
         device = response.data;
         console.log('[getDevice] device => ', device);
       } catch (error) {
