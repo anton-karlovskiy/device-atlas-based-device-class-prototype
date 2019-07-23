@@ -25,7 +25,7 @@ const Loading = <Fragment>Loading...</Fragment>;
 
 const DeviceNotice = ({ unsupportMessage, modelName, multicoreScore }) => (
   <Fragment>
-    <p>Currently this demo focuses on Android mobile devices, does not detect iOS, Windows phones and desktop machines(Windows & Mac)</p>
+    <p>Currently this demo focuses on Android/iOS devices, does not detect Windows phones and desktop machines(Windows & Mac)</p>
     { unsupportMessage ? (
       <p>{unsupportMessage}</p>
     ) : (
