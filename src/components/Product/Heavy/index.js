@@ -15,11 +15,12 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import Magnifier from 'react-magnifier';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
-});
+const Heavy = ({ imageUrl, ...rest }) => {
+  return (
+    <Magnifier src={imageUrl} {...rest} />
+  );
+};
+
+export default Heavy;
