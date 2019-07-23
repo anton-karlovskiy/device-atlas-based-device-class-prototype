@@ -2,10 +2,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors');
 const app = express();
 const DeviceApiWeb = require('deviceatlas-deviceapi').DeviceApiWeb;
 
 app.disable('x-powered-by');
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'build')));
 
 const deviceApi = (function () {
@@ -25,11 +27,19 @@ app.get('/api/device-properties', function (req, res) {
   console.log(req.headers['user-agent']);
   if (!deviceApi.error) {
     const properties = deviceApi.getPropertiesFromRequest(req);
-    return res.status(200).send(properties);
+    // ray test touch <
+    const props = {};
+    for (const name in properties.getMap()) {
+        props[name] = {};
+        props[name]['value'] = properties.get(name).getValue();
+        props[name]['dataType'] = properties.get(name).getDataType();
+    }
+    return res.status(200).send(props);
+    // ray test touch >
   } else {
     return res.status(500).json({
       message: deviceApi.error
-    })
+    });
   }
 });
  

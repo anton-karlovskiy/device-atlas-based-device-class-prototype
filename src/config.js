@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-const CORS_ANYWHERE = 'https://cors-anywhere.herokuapp.com/'
-
-// e.g. https://api.userstack.com/detect?access_key=657ccc84588ca50f125528dee37105a6&ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36
-const USERSTACK_API_URL = 'http://api.userstack.com/detect';
-const USERSTACK_API_KEY = '657ccc84588ca50f125528dee37105a6';
-
-// windows phones are excluded
-const ANDROID_BENCHMARKS_URL = 'https://browser.geekbench.com/android-benchmarks.json/';
-const IOS_BENCHMARKS_URL = 'https://browser.geekbench.com/ios-benchmarks.json/';
+const DEVICE_API_URL = 'http://localhost:5000/api/device-properties/';
 
 const Multicore_Score_Threshold = 4000;
 
 export {
-  CORS_ANYWHERE,
-  USERSTACK_API_URL,
-  USERSTACK_API_KEY,
-  ANDROID_BENCHMARKS_URL,
-  IOS_BENCHMARKS_URL,
+  DEVICE_API_URL,
   Multicore_Score_Threshold
 };

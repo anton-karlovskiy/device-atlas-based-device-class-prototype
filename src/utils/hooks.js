@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
+// ray test touch <
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import {
-  CORS_ANYWHERE,
-  USERSTACK_API_URL,
-  USERSTACK_API_KEY,
-  ANDROID_BENCHMARKS_URL,
-  // IOS_BENCHMARKS_URL
-} from '../config';
+import { DEVICE_API_URL } from '../config';
 
 const unsupportMessage = 'The device is not detected.';
 
@@ -34,19 +29,18 @@ const useDeviceClass = () => {
     const getDeviceClass = async () => {
       let matchedBenchmark;
       try {
-        const uastring = navigator.userAgent;
-  
-        const { data: { brand, name, device } } = await axios.get(`${USERSTACK_API_URL}?access_key=${USERSTACK_API_KEY}&ua=${uastring}`);
-    
-        if (device.is_mobile_device) {
-          const { data: { devices: androidBenchmarks } } = await axios.get(`${CORS_ANYWHERE}${ANDROID_BENCHMARKS_URL}`);
-          // iOS devices are not supported in userstack.com for now, but you can get accurate device info in deviceatlas.com
-          // const { data: { devices: iosBenchmarks } } = await axios.get(`${CORS_ANYWHERE}${IOS_BENCHMARKS_URL}`);
-          const allBenchmarks = [...androidBenchmarks/*, ...iosBenchmarks*/];
-    
-          const modelName = `${brand} ${name}`;
-          matchedBenchmark = allBenchmarks.find(benchmark => benchmark.name === modelName);
-        }
+        const { data: deviceProperites } = await axios.get(DEVICE_API_URL);
+        console.log('ray : ***** deviceProperites => ', deviceProperites);
+
+        // const { data: { brand, name, device } } = await axios.get(`${USERSTACK_API_URL}?access_key=${USERSTACK_API_KEY}&ua=${uastring}`);
+        // if (device.is_mobile_device) {
+        //   const { data: { devices: androidBenchmarks } } = await axios.get(`${CORS_ANYWHERE}${ANDROID_BENCHMARKS_URL}`);
+        //   // iOS devices are not supported in userstack.com for now, but you can get accurate device info in deviceatlas.com
+        //   // const { data: { devices: iosBenchmarks } } = await axios.get(`${CORS_ANYWHERE}${IOS_BENCHMARKS_URL}`);
+        //   const allBenchmarks = [...androidBenchmarks/*, ...iosBenchmarks*/];
+        //   const modelName = `${brand} ${name}`;
+        //   matchedBenchmark = allBenchmarks.find(benchmark => benchmark.name === modelName);
+        // }
       } catch (error) {
         console.log('[getDeviceClass] error => ', error);
       }
@@ -65,3 +59,4 @@ const useDeviceClass = () => {
 };
 
 export { useDeviceClass };
+// ray test touch >
