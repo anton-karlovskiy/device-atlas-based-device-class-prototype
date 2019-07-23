@@ -15,9 +15,9 @@
  */
 
 // TODO: replace this with the domain when deploying the app
-const HOST_ADDR = 'http://localhost:5000/';
+// const HOST_ADDR = 'http://localhost:5000/';
 
-const DEVICE_API_URL = `${HOST_ADDR}api/device/`;
+const DEVICE_API_URL = '/api/device/';
 
 // TODO: device properties testing -> remove on release
 // const DEVICE_PROPERTIES_API_URL = `${HOST_ADDR}api/device-properties/`;
