@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-const DEVICE_API_URL = 'http://localhost:5000/api/device-properties/';
+// TODO: hardcoded, not modular matched with server URL -> dotenv
+const DEVICE_API_URL = 'http://localhost:5000/api/device/';
+// ray test touch <
+const DEVICE_PROPERTIES_API_URL = 'http://localhost:5000/api/device-properties/';
+// ray test touch >
 
 const Multicore_Score_Threshold = 4000;
 
 export {
   DEVICE_API_URL,
+  // ray test touch <
+  DEVICE_PROPERTIES_API_URL,
+  // ray test touch >
   Multicore_Score_Threshold
 };

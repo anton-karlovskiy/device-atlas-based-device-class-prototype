@@ -16,7 +16,7 @@
 
 import React, { lazy, Suspense, Fragment } from 'react';
 
-import { useDeviceClass } from '../../utils/hooks';
+import { useDeviceParams } from '../../utils/hooks';
 import { Multicore_Score_Threshold } from '../../config';
 
 const LazyHeavy = lazy(() => import(/* webpackChunkName: "heavy" */ './Heavy'));
@@ -38,11 +38,11 @@ const DeviceNotice = ({ unsupportMessage, modelName, multicoreScore }) => (
 );
 
 const Product = ({ imageUrl, ...rest }) => {
-  const deviceParamSet = useDeviceClass();
+  const deviceParams = useDeviceParams();
   
-  if (!deviceParamSet) return Loading;
+  if (!deviceParams) return Loading;
   
-  const { name, multicore_score, unsupportMessage } = deviceParamSet;
+  const { name, multicore_score, unsupportMessage } = deviceParams;
   return (
     <Fragment>
       <DeviceNotice

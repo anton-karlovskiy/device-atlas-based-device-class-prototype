@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-// ray test touch <
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -22,41 +21,30 @@ import { DEVICE_API_URL } from '../config';
 
 const unsupportMessage = 'The device is not detected.';
 
-const useDeviceClass = () => {
-  const [deviceParamSet, setDeviceParamSet] = useState(null);
+const useDeviceParams = () => {
+  const [deviceParams, setdeviceParams] = useState(null);
 
   useEffect(() => {
-    const getDeviceClass = async () => {
-      let matchedBenchmark;
+    const getDevice = async () => {
+      let device;
       try {
-        const { data: deviceProperites } = await axios.get(DEVICE_API_URL);
-        console.log('ray : ***** deviceProperites => ', deviceProperites);
-
-        // const { data: { brand, name, device } } = await axios.get(`${USERSTACK_API_URL}?access_key=${USERSTACK_API_KEY}&ua=${uastring}`);
-        // if (device.is_mobile_device) {
-        //   const { data: { devices: androidBenchmarks } } = await axios.get(`${CORS_ANYWHERE}${ANDROID_BENCHMARKS_URL}`);
-        //   // iOS devices are not supported in userstack.com for now, but you can get accurate device info in deviceatlas.com
-        //   // const { data: { devices: iosBenchmarks } } = await axios.get(`${CORS_ANYWHERE}${IOS_BENCHMARKS_URL}`);
-        //   const allBenchmarks = [...androidBenchmarks/*, ...iosBenchmarks*/];
-        //   const modelName = `${brand} ${name}`;
-        //   matchedBenchmark = allBenchmarks.find(benchmark => benchmark.name === modelName);
-        // }
+        const response = await axios.get(`${DEVICE_API_URL}`);
+        device = response.data;
       } catch (error) {
-        console.log('[getDeviceClass] error => ', error);
+        console.log('[getDevice] error => ', error);
       }
   
-      if (matchedBenchmark) {
-        setDeviceParamSet({...matchedBenchmark});
+      if (device) {
+        setdeviceParams({...device});
       } else {
-        setDeviceParamSet({unsupportMessage});
+        setdeviceParams({unsupportMessage});
       }
     };
     
-    getDeviceClass();
+    getDevice();
   }, []);
 
-  return deviceParamSet;
+  return deviceParams;
 };
 
-export { useDeviceClass };
-// ray test touch >
+export { useDeviceParams };
