@@ -35,12 +35,10 @@ app.get('/api/device-properties', function (req, res) {
   
   const properties = deviceApi.getPropertiesFromRequest(req);
   
-  let props = {};
-  
+  const props = {};
   for (const name in properties.getMap()) {
-    const prop = {};
-    prop[name] = properties.get(name).getValue();
-    props = { ...props, prop };
+      props[name] = {};
+      props[name]['value'] = properties.get(name).getValue();
   }
   return res.status(200).send(props);
 });
