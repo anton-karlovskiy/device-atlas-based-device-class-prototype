@@ -66,8 +66,13 @@ app.get('/api/device', function (req, res) {
   const androidBenchmarks = require('./lib/geekbench/android-benchmarks.json').devices;
   const iosBenchmarks = require('./lib/geekbench/ios-benchmarks.json').devices;
   const allBenchmarks = [...androidBenchmarks, ...iosBenchmarks];
-  const deviceName = `${properties.get('vendor').getValue()} ${properties.get('marketingName').getValue()}`;
-  const matchedBenchmark = allBenchmarks.find(benchmark => benchmark.name === deviceName);
+  // ray test touch <
+  const isiOS = properties.get('osiOs').getValue();
+  const vendor = properties.get('vendor').getValue();
+  const marketingName = properties.get('marketingName').getValue();
+  const deviceName = !isiOS ? `${vendor} ${marketingName}` : marketingName;
+  // ray test touch >
+  const matchedBenchmark = allBenchmarks.find(benchmark => benchmark.name.toLowerCase() === deviceName.toLowerCase());
 
   if (!matchedBenchmark) {
     return res.status(404).json({
