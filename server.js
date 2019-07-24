@@ -5,6 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 const DeviceApiWeb = require('deviceatlas-deviceapi').DeviceApiWeb;
+const stringSimilarity = require('string-similarity');
 
 app.disable('x-powered-by');
 app.use(cors());
@@ -42,6 +43,11 @@ const deviceApi = (function () {
 
 app.get('/api/device', function (req, res) {
   console.log('[server] user-agent => ', req.headers['user-agent']);
+  // TODO: device properties testing -> remove on release
+  // const similarity1 = stringSimilarity.compareTwoStrings('Galaxy Tab 4 10.1 LTE', 'Galaxy Tab 4 10.1');
+  // const similarity2 = stringSimilarity.compareTwoStrings('Motorola Moto X 2nd Gen', 'Motorola Moto X');
+  // console.log('similarity1, similarity2 => ', similarity1, similarity2);
+  // similarity1, similarity2 =>  0.896551724137931 0.8
 
   if (deviceApi.error) {
     return res.status(500).json({
@@ -72,16 +78,21 @@ app.get('/api/device', function (req, res) {
   // what we can suggest is to trigger a reload of the page, with Javascript, after the initial detection. I know it's not an elegant solution but that's how the library works at the moment.
   // you could check if the cookie DAPROPS is set. Would something like this do?
   // (function reloadPage(){-1!=document.cookie.indexOf("DAPROPS=")?location.reload():setTimeout(reloadPage,50)})();
-  const deviceName = !isiOS ? `${vendor} ${marketingName}` : marketingName;
-  const matchedBenchmark = allBenchmarks.find(benchmark => benchmark.name.toLowerCase() === deviceName.toLowerCase());
+  const detectedDeviceName = !isiOS ? `${vendor} ${marketingName}` : marketingName;
+  const benchmarkDeviceNames = allBenchmarks.map(benchmark => benchmark.name);
+  const bestMatch = stringSimilarity.findBestMatch(detectedDeviceName, benchmarkDeviceNames);
+  const bestMatchIndex = bestMatch.bestMatchIndex;
+  const bestMatchRating = bestMatch.ratings[bestMatchIndex].rating;
 
-  if (!matchedBenchmark) {
+  // .88 is similarity threshold
+  console.log('[server] bestMatchRating => ', bestMatchRating);
+  if (bestMatchRating < .88) {
     return res.status(404).json({
       message: 'Not found matched benchmark!'
     });
   }
-
-  return res.status(200).send(matchedBenchmark);
+  
+  return res.status(200).send(allBenchmarks[bestMatchIndex]);
 });
 
 // need to declare a "catch all" route on your express server 
